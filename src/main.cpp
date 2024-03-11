@@ -1,8 +1,22 @@
 #include <Arduino.h>
-#include<stack>
 bool rightF = false, rightR = false, pRightF = false, pRightR = false;
 bool leftF = false, leftR = false, pLeftF = false, pLeftR = false;
 bool lineFollowBot = false;
+int commandBuffer[10];
+int getCommand(){
+  int temp = commandBuffer[0];
+  for(int i=0;i<9;i++){
+    commandBuffer[i]=commandBuffer[i+1];
+  }
+  commandBuffer[9]=0;
+  return temp;
+}
+void addCommand(int cmd){
+  for(int i=0;i<9;i++){
+    commandBuffer[i]=commandBuffer[i+1];
+  }
+  commandBuffer[9]=cmd;
+}
 void reset(int timer){
     digitalWrite(8,0);
     digitalWrite(9,0);
@@ -60,13 +74,6 @@ void command()
     rightR=true;
     rightF=false;
   }
-}
-void getCommand()
-{
-  if (Serial.available() > 0)
-    command();
-  if (Serial.available() > 0)
-    command();
 }
 void setMode()
 {
